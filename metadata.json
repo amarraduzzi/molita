@@ -1,0 +1,6 @@
+{
+  "name": "Molita — Compléments Alimentaires Gummies",
+  "description": "Site officiel de Molita: gummies vitamines premium pour la mémoire, la vitalité, le sommeil, les cheveux et la peau, et la détente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
