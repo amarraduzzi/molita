@@ -29,6 +29,9 @@ export const TrustBanner: React.FC = () => {
   return (
     <section id="confiance" className="w-full bg-[#17171a] text-stone-100 pt-6 pb-3 sm:pt-7 sm:pb-4 border-t border-b border-stone-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="font-serif text-center text-lg sm:text-xl text-stone-200 font-normal mb-4 sm:mb-5">
+          Notre engagement qualité
+        </h2>
         {/* Balanced 2x2 Grid on Mobile, 4-Column on Desktop */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {items.map((item, idx) => {

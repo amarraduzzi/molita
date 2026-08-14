@@ -1,5 +1,6 @@
 import React from 'react';
 import { UserPlus, ChevronRight, Briefcase } from 'lucide-react';
+import teamImg from '../assets/images/team_foto_1786653999226.jpg';
 
 interface RecruitmentCalloutProps {
   onNavigateTo: (sectionId: string) => void;
@@ -15,7 +16,7 @@ export const RecruitmentCallout: React.FC<RecruitmentCalloutProps> = ({ onNaviga
           <div className="order-1 lg:order-2 lg:col-span-5 w-full">
             <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-stone-700/60 shadow-xl aspect-4/3 sm:aspect-16/10 lg:aspect-4/3 w-full bg-stone-900 group">
               <img
-                src="/assets/recrutement/team-foto.jpg"
+                src={teamImg}
                 alt="Équipe Téléconseillers Molita"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
@@ -26,8 +27,8 @@ export const RecruitmentCallout: React.FC<RecruitmentCalloutProps> = ({ onNaviga
 
           {/* Text & Content: Below photo on mobile (order-2), left column on desktop (order-1, col-span-7) */}
           <div className="order-2 lg:order-1 lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-900 border border-stone-800 text-stone-300 text-xs font-semibold uppercase tracking-wider">
-              <UserPlus className="w-3.5 h-3.5 text-stone-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/15 border border-purple-400/40 text-purple-200 text-xs font-semibold uppercase tracking-wider">
+              <UserPlus className="w-3.5 h-3.5 text-purple-300" />
               <span>Nous recrutons • Télévente & Conseil Suisse</span>
             </div>
 

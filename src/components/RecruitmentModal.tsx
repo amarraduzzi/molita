@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, UserPlus, ChevronRight, ArrowRight } from 'lucide-react';
+import teamImg from '../assets/images/team_foto_1786653999226.jpg';
 
 // Set to true only during development/testing; false ensures popup shows only once per session
 const DISABLE_SESSION_CHECK = false;
@@ -69,7 +70,7 @@ export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo
         {/* Header Image */}
         <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-stone-900">
           <img
-            src="/assets/recrutement/team-foto.jpg"
+            src={teamImg}
             alt="Équipe Télévente Molita"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center"
