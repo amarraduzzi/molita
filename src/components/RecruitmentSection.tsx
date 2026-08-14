@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { JobApplication } from '../types';
-import { UserPlus, Globe2, Send, CheckCircle2, Briefcase, Award } from 'lucide-react';
+import { UserPlus, Globe2, Send, CheckCircle2, Briefcase, Award, Quote } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export const RecruitmentSection: React.FC = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<JobApplication>({
     fullName: '',
     email: '',
@@ -15,6 +17,7 @@ export const RecruitmentSection: React.FC = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [langError, setLangError] = useState(false);
 
   const availableLanguages = [
     { code: 'fr', label: 'Français', flag: '🇫🇷' },
@@ -24,22 +27,31 @@ export const RecruitmentSection: React.FC = () => {
 
   const handleLanguageToggle = (code: string) => {
     if (formData.languages.includes(code)) {
-      if (formData.languages.length > 1) {
-        setFormData({
-          ...formData,
-          languages: formData.languages.filter((l) => l !== code),
-        });
-      }
-    } else {
+      const updated = formData.languages.filter((l) => l !== code);
       setFormData({
         ...formData,
-        languages: [...formData.languages, code],
+        languages: updated,
       });
+      if (updated.length > 0) {
+        setLangError(false);
+      }
+    } else {
+      const updated = [...formData.languages, code];
+      setFormData({
+        ...formData,
+        languages: updated,
+      });
+      setLangError(false);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.languages.length === 0) {
+      setLangError(true);
+      return;
+    }
+    setLangError(false);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -58,22 +70,22 @@ export const RecruitmentSection: React.FC = () => {
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-900 border border-stone-800 text-stone-300 text-xs font-semibold uppercase tracking-wider">
               <UserPlus className="w-3.5 h-3.5 text-stone-400" />
-              Recrutement Télévente & Conseil Suisse
+              {t.recruitmentSection.badge}
             </div>
 
             <h2 className="font-serif text-3xl sm:text-5xl font-normal text-stone-100 tracking-tight leading-tight">
-              Rejoignez notre équipe de téléconseillers
+              {t.recruitmentSection.title}
             </h2>
 
             <p className="text-stone-300 font-sans text-base sm:text-lg leading-relaxed">
-              Molita développe sa force de vente dédiée au marché suisse. Nous recrutons des conseillers commerciaux passionnés, d'origine marocaine, basés au Maroc ou ailleurs en Europe, pour accompagner notre clientèle exigeante en Suisse en télétravail.
+              {t.recruitmentSection.intro}
             </p>
 
             {/* Language Cards Requirement - Matching Features style */}
             <div className="p-5 rounded-2xl bg-stone-900/90 border border-stone-800 space-y-3">
               <span className="text-xs font-semibold uppercase text-stone-400 tracking-wider flex items-center gap-2">
                 <Globe2 className="w-4 h-4 text-stone-400" />
-                Langues recherchées pour le marché suisse
+                {t.recruitmentSection.languagesTitle}
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                 <div className="p-3 rounded-xl bg-stone-800/80 border border-stone-700/80 text-xs flex items-center gap-2 shadow-2xs">
@@ -107,17 +119,17 @@ export const RecruitmentSection: React.FC = () => {
               <div className="p-4 rounded-2xl bg-stone-900/60 border border-stone-800 text-xs space-y-1">
                 <span className="font-semibold text-stone-200 flex items-center gap-1.5">
                   <Briefcase className="w-4 h-4 text-stone-400" />
-                  Rémunération Attractive
+                  {t.recruitmentSection.perk1Title}
                 </span>
-                <p className="text-stone-400 leading-relaxed">Fixe motivant + primes de vente non plafonnées basées sur le chiffre réalisé en Suisse.</p>
+                <p className="text-stone-400 leading-relaxed">{t.recruitmentSection.perk1Text}</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-stone-900/60 border border-stone-800 text-xs space-y-1">
                 <span className="font-semibold text-stone-200 flex items-center gap-1.5">
                   <Award className="w-4 h-4 text-stone-400" />
-                  Formation Continue
+                  {t.recruitmentSection.perk2Title}
                 </span>
-                <p className="text-stone-400 leading-relaxed">Formation complète aux produits Molita, aux techniques de vente suisses et à la nutrithérapie.</p>
+                <p className="text-stone-400 leading-relaxed">{t.recruitmentSection.perk2Text}</p>
               </div>
             </div>
           </div>
@@ -130,31 +142,36 @@ export const RecruitmentSection: React.FC = () => {
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="font-serif text-2xl text-white">
-                  Candidature bien reçue !
+                  {t.recruitmentSection.successTitle}
                 </h3>
                 <p className="text-stone-300 text-sm max-w-sm mx-auto">
-                  Merci <strong className="text-white">{formData.fullName}</strong>. Notre responsable recrutement examinera votre profil sous 48h et vous recontactera par téléphone.
+                  {t.recruitmentSection.successTextPrefix} <strong className="text-white">{formData.fullName}</strong>{t.recruitmentSection.successTextSuffix}
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="mt-4 px-6 py-2 rounded-full bg-stone-800 text-xs font-semibold text-stone-300 hover:text-white transition-colors"
                 >
-                  Envoyer une autre candidature
+                  {t.recruitmentSection.resetCta}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 font-sans">
-                <div className="flex items-center justify-between pb-2 border-b border-stone-800">
-                  <h3 className="font-serif text-xl font-normal text-white">
-                    Postuler en 2 minutes
-                  </h3>
-                  <span className="text-[11px] text-stone-400">Équipe Télévente Suisse</span>
+                <div className="pb-2 border-b border-stone-800 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-serif text-xl font-normal text-white">
+                      {t.recruitmentSection.formTitle}
+                    </h3>
+                    <span className="text-[11px] text-stone-400">{t.recruitmentSection.formSubtitle}</span>
+                  </div>
+                  <p className="text-xs text-stone-400 leading-relaxed">
+                    Les champs marqués (optionnel) peuvent être complétés plus tard lors de notre appel.
+                  </p>
                 </div>
 
                 {/* Name */}
                 <div>
                   <label className="block text-xs font-medium text-stone-300 mb-1">
-                    Nom & Prénom *
+                    {t.recruitmentSection.nameLabel}
                   </label>
                   <input
                     type="text"
@@ -170,7 +187,7 @@ export const RecruitmentSection: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-stone-300 mb-1">
-                      Email *
+                      {t.recruitmentSection.emailLabel}
                     </label>
                     <input
                       type="email"
@@ -183,7 +200,7 @@ export const RecruitmentSection: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-stone-300 mb-1">
-                      Téléphone (WhatsApp) *
+                      {t.recruitmentSection.phoneLabel}
                     </label>
                     <input
                       type="tel"
@@ -200,11 +217,10 @@ export const RecruitmentSection: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-stone-300 mb-1">
-                      Ville / Pays de résidence *
+                      {t.recruitmentSection.cityLabel}
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="ex. Casablanca, Paris, Genève, Lyon..."
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -214,25 +230,27 @@ export const RecruitmentSection: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-medium text-stone-300 mb-1">
-                      Expérience en télévente
+                      {t.recruitmentSection.experienceLabel}
                     </label>
                     <select
                       value={formData.experienceYears}
                       onChange={(e) => setFormData({ ...formData, experienceYears: e.target.value })}
                       className="w-full bg-stone-800 border border-stone-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-stone-500 transition-colors"
                     >
-                      <option value="0">Débutant (Formation offerte)</option>
-                      <option value="1-3">1 à 3 ans</option>
-                      <option value="3+">Plus de 3 ans</option>
+                      <option value="0">{t.recruitmentSection.experienceBeginner}</option>
+                      <option value="1-3">{t.recruitmentSection.experienceMid}</option>
+                      <option value="3+">{t.recruitmentSection.experienceSenior}</option>
                     </select>
                   </div>
                 </div>
 
                 {/* Languages Selection */}
                 <div>
-                  <label className="block text-xs font-medium text-stone-300 mb-1">
-                    Langues maîtrisées (Cocher tout ce qui s'applique)
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-medium text-stone-300">
+                      {t.recruitmentSection.languagesFieldLabel}
+                    </label>
+                  </div>
                   <div className="flex flex-wrap gap-2 pt-1">
                     {availableLanguages.map((lang) => {
                       const selected = formData.languages.includes(lang.code);
@@ -243,7 +261,7 @@ export const RecruitmentSection: React.FC = () => {
                           onClick={() => handleLanguageToggle(lang.code)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all border ${
                             selected
-                              ? 'bg-stone-100 border-stone-100 text-stone-900 font-semibold'
+                              ? 'bg-stone-100 border-stone-100 text-stone-900 font-semibold shadow-xs'
                               : 'bg-stone-800 border-stone-700 text-stone-400 hover:border-stone-600'
                           }`}
                         >
@@ -253,12 +271,17 @@ export const RecruitmentSection: React.FC = () => {
                       );
                     })}
                   </div>
+                  {langError && (
+                    <p className="text-xs text-rose-400 mt-1.5 animate-fadeIn">
+                      {t.recruitmentSection.languagesError}
+                    </p>
+                  )}
                 </div>
 
                 {/* Short Message / CV Link */}
                 <div>
                   <label className="block text-xs font-medium text-stone-300 mb-1">
-                    Présentation rapide ou lien CV / LinkedIn
+                    {t.recruitmentSection.messageLabel}
                   </label>
                   <textarea
                     rows={3}
@@ -280,7 +303,7 @@ export const RecruitmentSection: React.FC = () => {
                   ) : (
                     <>
                       <Send className="w-4 h-4 text-stone-800" />
-                      Envoyer ma candidature
+                      {t.recruitmentSection.submitCta}
                     </>
                   )}
                 </button>
@@ -288,6 +311,35 @@ export const RecruitmentSection: React.FC = () => {
             )}
           </div>
 
+        </div>
+      </div>
+
+      {/* Testimonial Section - Same visual style as homepage founder testimonial */}
+      <div className="mt-10 sm:mt-14 max-w-4xl mx-auto relative">
+        {/* Soft decorative background glow */}
+        <div className="absolute -top-6 -right-6 w-36 h-36 bg-purple-200/40 rounded-full blur-2xl pointer-events-none -z-10" />
+
+        <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-stone-200/80 space-y-6 relative overflow-hidden">
+          {/* Top Gradient Badge */}
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-serif text-2xl font-bold shadow-md">
+            <Quote className="w-6 h-6 fill-white/20 text-white" />
+          </div>
+
+          {/* Italic Quote */}
+          <blockquote className="font-serif text-xl sm:text-2xl text-stone-900 font-light leading-relaxed sm:leading-snug italic">
+            "Je travaille depuis Casablanca pour des clients suisses. L'équilibre entre flexibilité, formation continue et rémunération non plafonnée est exactement ce que je cherchais après des années en centre d'appel classique."
+          </blockquote>
+
+          {/* Author Info with Round Initial Avatar */}
+          <div className="flex items-center gap-3.5 pt-2">
+            <div className="w-11 h-11 rounded-full bg-stone-200 overflow-hidden flex items-center justify-center font-serif font-bold text-stone-700 text-sm shrink-0 border border-stone-300/80">
+              A.T.
+            </div>
+            <div>
+              <span className="font-semibold text-stone-900 text-sm sm:text-base block">Amina T.</span>
+              <span className="text-xs sm:text-sm text-stone-500">Téléconseillère Molita, depuis 8 mois</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

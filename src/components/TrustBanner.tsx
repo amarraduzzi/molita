@@ -1,41 +1,22 @@
 import React from 'react';
 import { Award, Leaf, Sparkles, Sun } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+
+const icons = [Award, Leaf, Sparkles, Sun];
 
 export const TrustBanner: React.FC = () => {
-  // 4 Core Product Guarantees with Unified Icon Style
-  const items = [
-    {
-      icon: Award,
-      title: 'Fabriqué en Suisse',
-      sub: 'Qualité & Rigueur Scientifique',
-    },
-    {
-      icon: Leaf,
-      title: '100% Végan',
-      sub: 'Pectine de fruit, 0 gélatine',
-    },
-    {
-      icon: Sparkles,
-      title: 'Sans Gluten & Allergènes',
-      sub: 'Digestion douce & optimale',
-    },
-    {
-      icon: Sun,
-      title: 'Arômes Naturels',
-      sub: 'Vrais fruits & extraits végétaux',
-    },
-  ];
+  const { t } = useLanguage();
 
   return (
     <section id="confiance" className="w-full bg-[#17171a] text-stone-100 pt-6 pb-3 sm:pt-7 sm:pb-4 border-t border-b border-stone-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="font-serif text-center text-lg sm:text-xl text-stone-200 font-normal mb-4 sm:mb-5">
-          Notre engagement qualité
+          {t.trustBanner.title}
         </h2>
         {/* Balanced 2x2 Grid on Mobile, 4-Column on Desktop */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-          {items.map((item, idx) => {
-            const IconComponent = item.icon;
+          {t.trustBanner.items.map((item, idx) => {
+            const IconComponent = icons[idx];
             return (
               <div
                 key={idx}

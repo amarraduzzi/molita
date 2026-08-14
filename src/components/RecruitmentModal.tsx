@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, UserPlus, ChevronRight, ArrowRight } from 'lucide-react';
 import teamImg from '../assets/images/team_foto_1786653999226.jpg';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // Set to true only during development/testing; false ensures popup shows only once per session
 const DISABLE_SESSION_CHECK = false;
@@ -11,6 +12,7 @@ interface RecruitmentModalProps {
 
 export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Check if modal was already dismissed in the current session (unless test mode is active)
@@ -80,7 +82,7 @@ export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo
           {/* Badge Overlay on Image */}
           <div className="absolute bottom-3 left-4 sm:left-6 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/40 backdrop-blur-md text-purple-200 text-xs font-semibold uppercase tracking-wider">
             <UserPlus className="w-3.5 h-3.5 text-pink-400" />
-            <span>Recrutement Télévente Suisse 🇨🇭</span>
+            <span>{t.recruitmentModal.badge}</span>
           </div>
         </div>
 
@@ -88,12 +90,12 @@ export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo
         <div className="p-5 sm:p-7 space-y-4 text-center sm:text-left">
           {/* Main Title */}
           <h3 className="font-serif text-2xl sm:text-3xl font-normal text-white tracking-tight leading-tight">
-            Rejoignez notre équipe de téléconseillers
+            {t.recruitmentModal.title}
           </h3>
 
           {/* Subtext */}
           <p className="font-sans text-stone-300 text-xs sm:text-sm leading-relaxed">
-            Vous parlez français, allemand ou italien ? Molita recrute au Maroc et en Europe pour sa force de vente Suisse en télétravail.
+            {t.recruitmentModal.text}
           </p>
 
           {/* Language Badges */}
@@ -118,7 +120,7 @@ export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo
               onClick={handleAction}
               className="group w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-stone-100 via-white to-stone-200 hover:from-white hover:to-white text-stone-950 font-semibold text-sm shadow-lg hover:shadow-xl active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer border border-white"
             >
-              <span>Découvrir les postes</span>
+              <span>{t.recruitmentModal.cta}</span>
               <ArrowRight className="w-4 h-4 text-purple-900 group-hover:translate-x-1 transition-transform" />
             </button>
 
@@ -126,7 +128,7 @@ export const RecruitmentModal: React.FC<RecruitmentModalProps> = ({ onNavigateTo
               onClick={handleClose}
               className="w-full py-2 text-xs font-sans text-stone-400 hover:text-stone-200 transition-colors cursor-pointer text-center block"
             >
-              Continuer vers la boutique
+              {t.recruitmentModal.dismiss}
             </button>
           </div>
         </div>

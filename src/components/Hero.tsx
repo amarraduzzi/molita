@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MOLITA_PRODUCTS } from '../data/products';
 import { Product } from '../types';
 import { ArrowDown, Sparkles, ChevronRight, PhoneCall } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface HeroProps {
   onSelectProduct: (product: Product) => void;
@@ -17,6 +18,7 @@ export const Hero: React.FC<HeroProps> = ({
   const [activeHoverId, setActiveHoverId] = useState<string | null>(null);
   const [mobileProductIndex, setMobileProductIndex] = useState(0);
   const [isFadeVisible, setIsFadeVisible] = useState(true);
+  const { t } = useLanguage();
 
   // Auto-rotate featured product on mobile every 3.5 seconds with smooth fade + scale transition
   useEffect(() => {
@@ -236,7 +238,7 @@ export const Hero: React.FC<HeroProps> = ({
                 className="absolute -top-1 -right-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white shadow-xs border border-white/60 transition-colors duration-500"
                 style={{ backgroundColor: currentMobileProduct.accentHex }}
               >
-                Formule du moment
+                {t.hero.formulaOfTheMoment}
               </div>
             </div>
 
@@ -298,7 +300,7 @@ export const Hero: React.FC<HeroProps> = ({
           >
             <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <span className="relative z-10 flex items-center justify-center gap-2">
-              Découvrir nos produits
+              {t.hero.primaryCta}
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
           </button>
@@ -309,7 +311,7 @@ export const Hero: React.FC<HeroProps> = ({
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/90 border border-stone-300 text-stone-800 text-sm font-semibold hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs"
           >
             <Sparkles className="w-4 h-4 text-purple-600" />
-            Trouver mes gummies (Quiz 1 min)
+            {t.hero.quizCta}
           </button>
         </div>
 
@@ -354,7 +356,7 @@ export const Hero: React.FC<HeroProps> = ({
             })}
           </div>
           <span className="text-[10px] text-stone-400 sm:hidden block text-center mt-1 font-sans">
-            ← Glisser pour voir les 5 formules →
+            {t.hero.swipeHint}
           </span>
         </div>
       </div>
@@ -366,7 +368,7 @@ export const Hero: React.FC<HeroProps> = ({
           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-stone-200 hover:bg-white text-stone-700 transition-all shadow-2xs"
         >
           <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Service client Suisse & Conseils : Rappel gratuit</span>
+          <span>{t.hero.serviceLink}</span>
         </button>
       </div>
 

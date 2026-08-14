@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { PhoneCall, Menu, X, Sparkles, UserPlus, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 interface HeaderProps {
   onOpenCallback: (productId?: string) => void;
@@ -11,6 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCallback, onNavigateTo }) 
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,17 +47,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCallback, onNavigateTo }) 
 
               {/* Desktop Text + Pill CTA */}
               <span className="hidden sm:inline-flex items-center font-sans text-stone-200 group-hover:text-white transition-colors">
-                <span className="font-medium">Nous recrutons : télévente Suisse, depuis le Maroc ou l'Europe 🇨🇭</span>
+                <span className="font-medium">{t.header.announcement.desktopText}</span>
                 <span className="ml-2.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/15 border border-white/25 text-white font-semibold text-xs transition-all duration-200 group-hover:bg-white group-hover:text-purple-950 group-hover:shadow-xs">
-                  Voir les postes <ChevronRight className="w-3 h-3 text-pink-300 group-hover:text-purple-950 transition-colors" />
+                  {t.header.announcement.desktopCta} <ChevronRight className="w-3 h-3 text-pink-300 group-hover:text-purple-950 transition-colors" />
                 </span>
               </span>
 
               {/* Mobile Text + Pill CTA */}
               <span className="sm:hidden inline-flex items-center font-sans text-stone-200 text-[11px] group-hover:text-white transition-colors">
-                <span>Nous recrutons au Maroc & en Europe</span>
+                <span>{t.header.announcement.mobileText}</span>
                 <span className="ml-1.5 inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white font-semibold text-[10px] transition-all duration-200 group-hover:bg-white group-hover:text-purple-950">
-                  Postuler <ChevronRight className="w-2.5 h-2.5 text-pink-300 group-hover:text-purple-950 transition-colors" />
+                  {t.header.announcement.mobileCta} <ChevronRight className="w-2.5 h-2.5 text-pink-300 group-hover:text-purple-950 transition-colors" />
                 </span>
               </span>
             </div>
@@ -66,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCallback, onNavigateTo }) 
                 setShowAnnouncement(false);
               }}
               className="absolute right-0 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-100 p-1 rounded-full hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
-              aria-label="Masquer l'annonce"
+              aria-label={t.header.announcement.closeAria}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -83,127 +86,132 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCallback, onNavigateTo }) 
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo */}
-        <div onClick={() => handleNavClick('hero')} className="cursor-pointer">
-          <Logo size="md" />
-        </div>
+          {/* Logo */}
+          <div onClick={() => handleNavClick('hero')} className="cursor-pointer">
+            <Logo size="md" />
+          </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-700">
-          <button
-            onClick={() => handleNavClick('produits')}
-            className="hover:text-stone-950 transition-colors py-1 relative group"
-          >
-            Nos Produits
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-600 group-hover:w-full transition-all duration-300" />
-          </button>
-
-          <button
-            onClick={() => handleNavClick('diagnostic')}
-            className="hover:text-stone-950 transition-colors py-1 flex items-center gap-1.5 text-purple-700 font-semibold"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-purple-5-00" />
-            Quiz Diagnostic
-          </button>
-
-          <button
-            onClick={() => handleNavClick('histoire')}
-            className="hover:text-stone-950 transition-colors py-1 relative group"
-          >
-            Notre Histoire
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-600 group-hover:w-full transition-all duration-300" />
-          </button>
-
-          <button
-            onClick={() => handleNavClick('recrutement')}
-            className="hover:text-stone-950 transition-colors py-1 flex items-center gap-1.5 text-stone-600 group"
-          >
-            <UserPlus className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-800 transition-colors" />
-            Recrutement
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full">
-              Suisse/Maroc
-            </span>
-          </button>
-        </nav>
-
-        {/* CTA Button */}
-        <div className="hidden sm:flex items-center gap-3">
-          <button
-            onClick={() => onOpenCallback()}
-            className="relative group overflow-hidden rounded-full bg-gradient-to-r from-stone-900 to-stone-800 text-white text-xs font-semibold px-5 py-2.5 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
-          >
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <PhoneCall className="w-3.5 h-3.5 relative z-10 text-pink-300 group-hover:text-white transition-colors" />
-            <span className="relative z-10">Être rappelé (Suisse 🇨🇭)</span>
-          </button>
-        </div>
-
-        {/* Mobile menu toggle */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={() => onOpenCallback()}
-            className="bg-stone-900 text-white p-2 rounded-full text-xs flex items-center justify-center"
-            title="Être rappelé"
-          >
-            <PhoneCall className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-stone-800 rounded-lg focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-[#faf9f6] border-b border-stone-200 px-4 pt-4 pb-6 space-y-4 shadow-xl animate-fadeIn">
-          <nav className="flex flex-col space-y-3 font-medium text-stone-800">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-stone-700">
             <button
               onClick={() => handleNavClick('produits')}
-              className="text-left py-2 border-b border-stone-100 text-lg font-serif"
+              className="hover:text-stone-950 transition-colors py-1 relative group"
             >
-              Nos 5 Gummies Products
+              {t.header.nav.products}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-600 group-hover:w-full transition-all duration-300" />
             </button>
+
             <button
               onClick={() => handleNavClick('diagnostic')}
-              className="text-left py-2 border-b border-stone-100 text-lg font-serif flex items-center gap-2 text-purple-700"
+              className="hover:text-stone-950 transition-colors py-1 flex items-center gap-1.5 text-purple-700 font-semibold"
             >
-              <Sparkles className="w-4 h-4" />
-              Diagnostic sur-mesure
+              <Sparkles className="w-3.5 h-3.5 text-purple-500" />
+              {t.header.nav.quiz}
             </button>
+
             <button
               onClick={() => handleNavClick('histoire')}
-              className="text-left py-2 border-b border-stone-100 text-lg font-serif"
+              className="hover:text-stone-950 transition-colors py-1 relative group"
             >
-              Notre Histoire
+              {t.header.nav.story}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-600 group-hover:w-full transition-all duration-300" />
             </button>
+
             <button
               onClick={() => handleNavClick('recrutement')}
-              className="text-left py-2 border-b border-stone-100 text-lg font-serif flex items-center justify-between"
+              className="hover:text-stone-950 transition-colors py-1 flex items-center gap-1.5 text-stone-600 group"
             >
-              <span>Recrutement Télévente</span>
-              <span className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full font-sans font-normal">
-                Recrutement
+              <UserPlus className="w-3.5 h-3.5 text-stone-400 group-hover:text-stone-800 transition-colors" />
+              {t.header.nav.recruitment}
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded-full">
+                {t.header.nav.recruitmentBadge}
               </span>
             </button>
           </nav>
-          <div className="pt-2">
+
+          {/* Language Selector + CTA Button */}
+          <div className="hidden sm:flex items-center gap-3">
+            {/* Language Selector */}
+            <LanguageSelector variant="header" />
+
+            {/* CTA Button */}
             <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenCallback();
-              }}
-              className="w-full bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-md"
+              onClick={() => onOpenCallback()}
+              className="relative group overflow-hidden rounded-full bg-gradient-to-r from-stone-900 to-stone-800 text-white text-xs font-semibold px-5 py-2.5 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+            >
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <PhoneCall className="w-3.5 h-3.5 relative z-10 text-pink-300 group-hover:text-white transition-colors" />
+              <span className="relative z-10">{t.header.callbackButton}</span>
+            </button>
+          </div>
+
+          {/* Mobile menu toggle & quick callback */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageSelector variant="compact" />
+            <button
+              onClick={() => onOpenCallback()}
+              className="bg-stone-900 text-white p-2 rounded-full text-xs flex items-center justify-center"
+              title={t.header.callbackButton}
             >
               <PhoneCall className="w-4 h-4" />
-              Demander un rappel gratuit 🇨🇭
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-stone-800 rounded-lg focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
-      )}
+
+        {/* Mobile Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-[#faf9f6] border-b border-stone-200 px-4 pt-4 pb-6 space-y-4 shadow-xl animate-fadeIn">
+            <nav className="flex flex-col space-y-3 font-medium text-stone-800">
+              <button
+                onClick={() => handleNavClick('produits')}
+                className="text-left py-2 border-b border-stone-100 text-lg font-serif"
+              >
+                {t.header.mobile.products}
+              </button>
+              <button
+                onClick={() => handleNavClick('diagnostic')}
+                className="text-left py-2 border-b border-stone-100 text-lg font-serif flex items-center gap-2 text-purple-700"
+              >
+                <Sparkles className="w-4 h-4" />
+                {t.header.mobile.diagnostic}
+              </button>
+              <button
+                onClick={() => handleNavClick('histoire')}
+                className="text-left py-2 border-b border-stone-100 text-lg font-serif"
+              >
+                {t.header.mobile.story}
+              </button>
+              <button
+                onClick={() => handleNavClick('recrutement')}
+                className="text-left py-2 border-b border-stone-100 text-lg font-serif flex items-center justify-between"
+              >
+                <span>{t.header.mobile.recruitment}</span>
+                <span className="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full font-sans font-normal">
+                  {t.header.mobile.recruitmentBadge}
+                </span>
+              </button>
+            </nav>
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenCallback();
+                }}
+                className="w-full bg-gradient-to-r from-purple-700 to-indigo-700 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 shadow-md"
+              >
+                <PhoneCall className="w-4 h-4" />
+                {t.header.mobile.callbackButton}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
